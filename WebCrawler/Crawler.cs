@@ -12,7 +12,7 @@ class Crawler
     private static HashSet<string> _alreadyChecked = new HashSet<string>(); 
     private static HashSet<string> _linksToCheckLater = new HashSet<string>(); 
     
-    private static int maxcount = 0;
+    private static int lengthCount = 0;
     private static Boolean found = false;
     static void Main(string[] args)
     {
@@ -24,10 +24,14 @@ class Crawler
     private static void SearchForArticle()
     {
         _linksToVisitQueue = GetLinksIntoHashSet("https://en.wikipedia.org/wiki/Special:Random");
-      
-        while (!found)
+        if (_linksToVisitQueue.Contains("/wiki/Donald_Trump"))
         {
-            maxcount++;
+            Console.WriteLine("Found Donald Trump!" + "\n" + "Length from the start: " + lengthCount + "\n" + "Found the article from random");
+            return;
+        }
+            while (!found)
+        {
+            lengthCount++;
             for (int i = 0; i < _linksToVisitQueue.Count; i++)
             {
                 IEnumerable<string> e = _linksToVisitQueue.AsEnumerable();
@@ -46,7 +50,7 @@ class Crawler
                     {
 
                         found = true;
-                        Console.WriteLine("Found Donald Trump!" + "\n" + "Length from the start: " + maxcount + "\n" + "Last checked link: https://en.wikipedia.org" + f);
+                        Console.WriteLine("Found Donald Trump!" + "\n" + "Length from the start: " + lengthCount + "\n" + "Last checked link: https://en.wikipedia.org" + f);
                         break;
                     }
                     
@@ -61,7 +65,6 @@ class Crawler
             }
             _linksToVisitQueue.Clear();
             _linksToVisitQueue.UnionWith(_linksToCheckLater);
-          
             _linksToCheck.Clear();
             
         }
